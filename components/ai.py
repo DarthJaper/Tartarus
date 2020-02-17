@@ -10,29 +10,29 @@ class BasicMonster:
         results = []
 
         monster = self.owner
-        if libtcod.map_is_in_fov(fov_map, monster.x, monster.y):
+        if monster.z == target.z:
 
             if monster.distance_to(target) >= 2:
-                monster.move_astar(target, entities, game_map)
+                monster.move_astar(target, entities, game_map, fov_map)
 
             elif target.fighter.hp > 0 and monster.z == target.z:
-                monster.push(target)
+                monster.push(target, entities, fov_map, game_map)
                 
-            else:
-                (rx, ry) = (0, 0)
-                while (rx, ry) == (0, 0):
-                    #pick -1 or 1
-                    coin = randint(0,1)
-                    if coin == 0:
-                        rx = randint(-1, 1)
-                        ry = randint(-1, 1)
-                    else:
-                        ry = randint(-1, 1)
-                        rx = randint(-1, 1)
-                        
-                    if (rx, ry) == (target.x, target.y): (rx, ry) = (0, 0)
-                        
-                monster.move(rx, ry)   
+        else:
+            (rx, ry) = (0, 0)
+            while (rx, ry) == (0, 0):
+                #pick -1 or 1
+                coin = randint(0,1)
+                if coin == 0:
+                    rx = randint(-1, 1)
+                    ry = randint(-1, 1)
+                else:
+                    ry = randint(-1, 1)
+                    rx = randint(-1, 1)
+                    
+                if (rx, ry) == (target.x, target.y): (rx, ry) = (0, 0)
+                    
+            monster.move(rx, ry, fov_map)   
                
         return results
 
@@ -50,7 +50,7 @@ class ConfusedMonster:
             random_y = self.owner.y + randint(0, 2) - 1
 
             if random_x != self.owner.x and random_y != self.owner.y:
-                self.owner.move_towards(random_x, random_y, game_map, entities)
+                self.owner.move_towards(random_x, random_y, game_map, entities, fov_map)
 
             self.number_of_turns -= 1
         else:

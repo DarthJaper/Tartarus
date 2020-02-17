@@ -248,13 +248,13 @@ class GameMap:
                     ai_component = BasicMonster()
 
                     monster = Entity(x, y, 4, 'o', libtcod.yellow, 'Orc', blocks=True,
-                                     render_order=RenderOrder.ACTOR, fighter=fighter_component, ai=ai_component)
+                                     render_order=RenderOrder.ACTOR, strength=4, fighter=fighter_component, ai=ai_component)
                 else:
                     fighter_component = Fighter(hp=16, defense=1, power=4)
                     ai_component = BasicMonster()
 
                     monster = Entity(x, y, 4, 'T', libtcod.cyan, 'Troll', blocks=True, fighter=fighter_component,
-                                     render_order=RenderOrder.ACTOR, ai=ai_component)
+                                     render_order=RenderOrder.ACTOR, strength=10, ai=ai_component)
 
                 entities.append(monster)
 

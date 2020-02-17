@@ -9,7 +9,9 @@ from input_handlers import handle_keys, handle_mouse, handle_main_menu
 from loader_functions.initialize_new_game import get_constants, get_game_variables
 from loader_functions.data_loaders import load_game, save_game
 from menus import main_menu, message_box
-from render_functions import clear_all, render_all
+from render_functions import clear_all, render_all, clear_entity, draw_entity
+
+import time
 
 def play_game(player, entities, game_map, message_log, game_state, con, panel, constants):
     fov_recompute = True
@@ -65,11 +67,11 @@ def play_game(player, entities, game_map, message_log, game_state, con, panel, c
             if not game_map.is_blocked(destination_x, destination_y):
                 target = get_blocking_entities_at_location(entities, destination_x, destination_y)
 
-                if target:
-                    player.push(target, strength=8)
+                if target and target.z == player.z:
+                    player.push(target, entities, fov_map, game_map)
                     
                 else:
-                    player.move(dx, dy)
+                    player.move(dx, dy, fov_map)
 
                     fov_recompute = True
 
@@ -174,11 +176,23 @@ def play_game(player, entities, game_map, message_log, game_state, con, panel, c
         if game_state == GameStates.ENEMY_TURN:
             
             player.depth += 10
+            if player.depth % 30 == 0:
+                game_map.place_entities(0, entities, 2, 0)
+                
         
             for entity in entities:
                 if entity.ai:
                     enemy_turn_results = entity.ai.take_turn(player, fov_map, game_map, entities)
                     if entity.z > 0: entity.z -= 1
+                    target = get_blocking_entities_at_location(entities, entity.x, entity.y)
+                    if target:
+                        if not target == entity:
+                            if target.z == 0:
+                                entities.remove(target)
+                            else:
+                                target.z -= 1
+
+                            
                     for enemy_turn_result in enemy_turn_results:
                         message = enemy_turn_result.get('message')
                         dead_entity = enemy_turn_result.get('dead')

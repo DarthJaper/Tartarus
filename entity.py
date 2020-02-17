@@ -2,14 +2,15 @@ import tcod as libtcod
 
 import math
 
-from render_functions import RenderOrder
+from render_functions import RenderOrder, clear_entity, draw_entity
 
+import time
 
 class Entity:
     """
     A generic object to represent players, enemies, items, etc.
     """
-    def __init__(self, x, y, z, char, color, name, blocks=False, render_order=RenderOrder.CORPSE, fighter=None, ai=None,
+    def __init__(self, x, y, z, char, color, name, blocks=False, render_order=RenderOrder.CORPSE, strength=2, fighter=None, ai=None,
                  item=None, inventory=None):
         self.x = x
         self.y = y
@@ -19,6 +20,7 @@ class Entity:
         self.name = name
         self.blocks = blocks
         self.render_order = render_order
+        self.strength = strength
         self.fighter = fighter
         self.ai = ai
         self.item = item
@@ -26,6 +28,7 @@ class Entity:
 
         if self.name == "Player":
             self.depth = 10
+            
 
         if self.fighter:
             self.fighter.owner = self
@@ -39,12 +42,14 @@ class Entity:
         if self.inventory:
             self.inventory.owner = self
 
-    def move(self, dx, dy):
+    def move(self, dx, dy, fov_map):
+        clear_entity(0, self)
         # Move the entity by a given amount
         self.x += dx
         self.y += dy
-
-    def move_towards(self, target_x, target_y, game_map, entities):
+        draw_entity(0, self, fov_map)
+        
+    def move_towards(self, target_x, target_y, game_map, entities, fov_map):
         dx = target_x - self.x
         dy = target_y - self.y
         distance = math.sqrt(dx ** 2 + dy ** 2)
@@ -54,19 +59,46 @@ class Entity:
 
         if not (game_map.is_blocked(self.x + dx, self.y + dy) or
                     get_blocking_entities_at_location(entities, self.x + dx, self.y + dy)):
-            self.move(dx, dy)
+            self.move(dx, dy, fov_map)
 
-    def push(self, target, strength=2):
+    def push(self, target, entities, fov_map, game_map):
         #push a target. can get direction from self.x,y and target.x,y1
 
         dirx = target.x - self.x
         diry = target.y - self.y
             
+        clear_entity(0, self)
         self.x -= dirx
         self.y -= diry
+        draw_entity(0, self, fov_map)
         
-        target.x += (dirx * strength)
-        target.y += (diry * strength)
+        for c in range(self.strength+1):
+            targets_target = get_blocking_entities_at_location(entities, target.x + dirx, target.y + diry)
+        
+            if targets_target:
+                target.push(targets_target, entities, fov_map, game_map)
+                break
+            else:
+                tx = target.x + dirx
+                ty = target.y + diry
+            
+                if game_map.tiles[tx][ty].blocked:
+                    if target.name == "Player":
+                        print('oof. player dies.')
+                        break
+                    else:
+                        print(target.name + " dies!")
+                        entities.remove(target)
+                        break
+                    
+                else:
+                    clear_entity(0, target)
+                    target.x += dirx
+                    target.y += diry
+                    draw_entity(0, target, fov_map)
+                    time.sleep(.015)
+                    libtcod.console_flush()
+            
         
 
     def distance(self, x, y):
@@ -77,7 +109,7 @@ class Entity:
         dy = other.y - self.y
         return math.sqrt(dx ** 2 + dy ** 2)
 
-    def move_astar(self, target, entities, game_map):
+    def move_astar(self, target, entities, game_map, fov_map):
         # Create a FOV map that has the dimensions of the map
         fov = libtcod.map_new(game_map.width, game_map.height)
 
@@ -115,7 +147,7 @@ class Entity:
         else:
             # Keep the old move function as a backup so that if there are no paths (for example another monster blocks a corridor)
             # it will still try to move towards the player (closer to the corridor opening)
-            self.move_towards(target.x, target.y, game_map, entities)
+            self.move_towards(target.x, target.y, game_map, entities, fov_map)
 
             # Delete the path to free memory
         libtcod.path_delete(my_path)
