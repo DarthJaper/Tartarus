@@ -73,9 +73,8 @@ def render_all(con, panel, entities, player, game_map, fov_map, fov_recompute, m
     libtcod.console_set_default_background(con, libtcod.black)
     libtcod.console_set_default_foreground(con, libtcod.white)
     
-    #!!!!! TODO; Chanve "140" to depth var
     libtcod.console_print_ex(con, 1, 1, libtcod.BKGND_NONE, libtcod.LEFT, "Depth;")
-    libtcod.console_print_ex(con, 1, 2, libtcod.BKGND_NONE, libtcod.LEFT, "140")
+    libtcod.console_print_ex(con, 1, 2, libtcod.BKGND_NONE, libtcod.LEFT, str(player.depth))
 
     libtcod.console_print_ex(con, 36, 1, libtcod.BKGND_NONE, libtcod.LEFT, "123")
     libtcod.console_print_ex(con, 36, 2, libtcod.BKGND_NONE, libtcod.LEFT, "4 4")

@@ -15,10 +15,25 @@ class BasicMonster:
             if monster.distance_to(target) >= 2:
                 monster.move_astar(target, entities, game_map)
 
-            elif target.fighter.hp > 0:
-                attack_results = monster.fighter.attack(target)
-                results.extend(attack_results)
-
+            elif target.fighter.hp > 0 and monster.z == target.z:
+                monster.push(target)
+                
+            else:
+                (rx, ry) = (0, 0)
+                while (rx, ry) == (0, 0):
+                    #pick -1 or 1
+                    coin = randint(0,1)
+                    if coin == 0:
+                        rx = randint(-1, 1)
+                        ry = randint(-1, 1)
+                    else:
+                        ry = randint(-1, 1)
+                        rx = randint(-1, 1)
+                        
+                    if (rx, ry) == (target.x, target.y): (rx, ry) = (0, 0)
+                        
+                monster.move(rx, ry)   
+               
         return results
 
 

@@ -66,8 +66,8 @@ def play_game(player, entities, game_map, message_log, game_state, con, panel, c
                 target = get_blocking_entities_at_location(entities, destination_x, destination_y)
 
                 if target:
-                    attack_results = player.fighter.attack(target)
-                    player_turn_results.extend(attack_results)
+                    player.push(target, strength=8)
+                    
                 else:
                     player.move(dx, dy)
 
@@ -172,6 +172,9 @@ def play_game(player, entities, game_map, message_log, game_state, con, panel, c
                 message_log.add_message(Message('Targeting cancelled'))
 
         if game_state == GameStates.ENEMY_TURN:
+            
+            player.depth += 10
+        
             for entity in entities:
                 if entity.ai:
                     enemy_turn_results = entity.ai.take_turn(player, fov_map, game_map, entities)

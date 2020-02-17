@@ -24,6 +24,9 @@ class Entity:
         self.item = item
         self.inventory = inventory
 
+        if self.name == "Player":
+            self.depth = 10
+
         if self.fighter:
             self.fighter.owner = self
 
@@ -52,6 +55,19 @@ class Entity:
         if not (game_map.is_blocked(self.x + dx, self.y + dy) or
                     get_blocking_entities_at_location(entities, self.x + dx, self.y + dy)):
             self.move(dx, dy)
+
+    def push(self, target, strength=2):
+        #push a target. can get direction from self.x,y and target.x,y1
+
+        dirx = target.x - self.x
+        diry = target.y - self.y
+            
+        self.x -= dirx
+        self.y -= diry
+        
+        target.x += (dirx * strength)
+        target.y += (diry * strength)
+        
 
     def distance(self, x, y):
         return math.sqrt((x - self.x) ** 2 + (y - self.y) ** 2)
