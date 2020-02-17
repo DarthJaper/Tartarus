@@ -175,7 +175,7 @@ def play_game(player, entities, game_map, message_log, game_state, con, panel, c
             for entity in entities:
                 if entity.ai:
                     enemy_turn_results = entity.ai.take_turn(player, fov_map, game_map, entities)
-
+                    if entity.z > 0: entity.z -= 1
                     for enemy_turn_result in enemy_turn_results:
                         message = enemy_turn_result.get('message')
                         dead_entity = enemy_turn_result.get('dead')

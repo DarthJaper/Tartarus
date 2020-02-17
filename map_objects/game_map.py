@@ -21,315 +21,196 @@ class GameMap:
     def __init__(self, width, height):
         self.width = width
         self.height = height
-        self.tiles = self.initialize_tiles()
-
+        for i in range(0, 5):
+            self.tiles = self.initialize_tiles()
+        
     def initialize_tiles(self):
         tiles = [[Tile(True) for y in range(self.height)] for x in range(self.width)]
 
         return tiles
 
-    def make_map(self, max_rooms, room_min_size, room_max_size, map_width, map_height, player, entities,
-                 max_monsters_per_room, max_items_per_room):
-       
-        y = 1
+    def make_circle(self, y=3):
+ 
         #painfully draw a circle
-        for x in range(25, 35):
+        for x in range(17, 23):
             self.tiles[x][y].block_sight = False
             self.tiles[x][y].blocked = False
         y += 1
             
-        for x in range(21, 39):
+        for x in range(14, 26):
             self.tiles[x][y].block_sight = False
             self.tiles[x][y].blocked = False
         y += 1
         
-        for x in range(18, 42):
+        for x in range(11, 29):
             self.tiles[x][y].block_sight = False
             self.tiles[x][y].blocked = False
         y += 1
         
-        for x in range(16, 44):
+        for x in range(10, 30):
             self.tiles[x][y].block_sight = False
             self.tiles[x][y].blocked = False
         y += 1
         
-        for x in range(15, 45):
+        for x in range(9, 31):
             self.tiles[x][y].block_sight = False
             self.tiles[x][y].blocked = False
         y += 1
         
-        for x in range(13, 47):
+        for x in range(8, 32):
             self.tiles[x][y].block_sight = False
             self.tiles[x][y].blocked = False
         y += 1
         
-        for x in range(12, 48):
+        for x in range(7, 33):
             self.tiles[x][y].block_sight = False
             self.tiles[x][y].blocked = False
         y += 1
         
-        for x in range(11, 49):
+        for x in range(6, 34):
             self.tiles[x][y].block_sight = False
             self.tiles[x][y].blocked = False
         y += 1
         
-        for x in range(10, 50):
+        for x in range(5, 35):
             self.tiles[x][y].block_sight = False
             self.tiles[x][y].blocked = False
         y += 1
         
-        for x in range(9, 51):
+        for x in range(5, 35):
             self.tiles[x][y].block_sight = False
             self.tiles[x][y].blocked = False
         y += 1
         
-        for x in range(8, 52):
+        for x in range(5, 35):
             self.tiles[x][y].block_sight = False
             self.tiles[x][y].blocked = False
         y += 1
         
-        for x in range(7, 53):
+        for x in range(4, 36):
             self.tiles[x][y].block_sight = False
             self.tiles[x][y].blocked = False
         y += 1
         
-        
-        for x in range(6, 54):
+        for x in range(4, 36):
             self.tiles[x][y].block_sight = False
             self.tiles[x][y].blocked = False
         y += 1
         
-        for x in range(6, 54):
+        for x in range(4, 36):
             self.tiles[x][y].block_sight = False
             self.tiles[x][y].blocked = False
         y += 1
         
-        for x in range(5, 55):
-            self.tiles[x][y].block_sight = False
-            self.tiles[x][y].blocked = False
-        y += 1
-        for x in range(4, 56):
+        for x in range(3, 37):
             self.tiles[x][y].block_sight = False
             self.tiles[x][y].blocked = False
         y += 1
         
-        for x in range(4, 56):
+        for x in range(3, 37):
             self.tiles[x][y].block_sight = False
             self.tiles[x][y].blocked = False
         y += 1
         
-        for x in range(3, 57):
+        for x in range(3, 37):
             self.tiles[x][y].block_sight = False
             self.tiles[x][y].blocked = False
         y += 1
         
-        for x in range(3, 57):
+        for x in range(3, 37):
             self.tiles[x][y].block_sight = False
             self.tiles[x][y].blocked = False
         y += 1
         
-        for x in range(3, 57):
+        for x in range(3, 37):
             self.tiles[x][y].block_sight = False
             self.tiles[x][y].blocked = False
         y += 1
         
-        for x in range(2, 58):
+        for x in range(3, 37):
             self.tiles[x][y].block_sight = False
             self.tiles[x][y].blocked = False
         y += 1
         
-        for x in range(2, 58):
-            self.tiles[x][y].block_sight = False
-            self.tiles[x][y].blocked = False
-        y += 1
-        
-        for x in range(2, 58):
-            self.tiles[x][y].block_sight = False
-            self.tiles[x][y].blocked = False
-        y += 1
-        
-        for x in range(2, 58):
-            self.tiles[x][y].block_sight = False
-            self.tiles[x][y].blocked = False
-        y += 1
-        
-        for x in range(1, 59):
-            self.tiles[x][y].block_sight = False
-            self.tiles[x][y].blocked = False
-        y += 1
-        
-        for x in range(1, 59):
-            self.tiles[x][y].block_sight = False
-            self.tiles[x][y].blocked = False
-        y += 1
-        
-        for x in range(1, 59):
-            self.tiles[x][y].block_sight = False
-            self.tiles[x][y].blocked = False
-        y += 1
-        
-        for x in range(1, 59):
-            self.tiles[x][y].block_sight = False
-            self.tiles[x][y].blocked = False
-        y += 1
-        
-        for x in range(1, 59):
-            self.tiles[x][y].block_sight = False
-            self.tiles[x][y].blocked = False
-        y += 1
-        
-        for x in range(1, 59):
-            self.tiles[x][y].block_sight = False
-            self.tiles[x][y].blocked = False
-        y += 1
-        
-        for x in range(1, 59):
-            self.tiles[x][y].block_sight = False
-            self.tiles[x][y].blocked = False
-        y += 1
-        
-        for x in range(1, 59):
-            self.tiles[x][y].block_sight = False
-            self.tiles[x][y].blocked = False
-        y += 1
-        
-        for x in range(1, 59):
-            self.tiles[x][y].block_sight = False
-            self.tiles[x][y].blocked = False
-        y += 1
-        
-        for x in range(1, 59):
-            self.tiles[x][y].block_sight = False
-            self.tiles[x][y].blocked = False
-        y += 1
-        
-        for x in range(2, 58):
+        for x in range(4, 36):
             self.tiles[x][y].block_sight = False
             self.tiles[x][y].blocked = False
         y += 1
 
-        for x in range(2, 58):
+        for x in range(4, 36):
             self.tiles[x][y].block_sight = False
             self.tiles[x][y].blocked = False
         y += 1
         
-        for x in range(2, 58):
+        for x in range(4, 36):
             self.tiles[x][y].block_sight = False
             self.tiles[x][y].blocked = False
         y += 1
         
-        for x in range(2, 58):
+        for x in range(5, 35):
             self.tiles[x][y].block_sight = False
             self.tiles[x][y].blocked = False
         y += 1
         
-        for x in range(3, 57):
+        for x in range(5, 35):
             self.tiles[x][y].block_sight = False
             self.tiles[x][y].blocked = False
         y += 1
         
-        for x in range(3, 57):
+        for x in range(5, 35):
             self.tiles[x][y].block_sight = False
             self.tiles[x][y].blocked = False
         y += 1
         
-        for x in range(3, 57):
+        for x in range(6, 34):
             self.tiles[x][y].block_sight = False
             self.tiles[x][y].blocked = False
         y += 1
         
-        for x in range(4, 56):
+        for x in range(7, 33):
             self.tiles[x][y].block_sight = False
             self.tiles[x][y].blocked = False
         y += 1
         
-        for x in range(4, 56):
+        for x in range(8, 32):
             self.tiles[x][y].block_sight = False
             self.tiles[x][y].blocked = False
         y += 1
         
-        for x in range(5, 55):
+        for x in range(9, 31):
             self.tiles[x][y].block_sight = False
             self.tiles[x][y].blocked = False
         y += 1
         
-        for x in range(6, 54):
+        for x in range(10, 30):
             self.tiles[x][y].block_sight = False
             self.tiles[x][y].blocked = False
         y += 1
         
-        
-        for x in range(6, 54):
-            self.tiles[x][y].block_sight = False
-            self.tiles[x][y].blocked = False
-        y += 1
-        for x in range(7, 53):
+        for x in range(11, 29):
             self.tiles[x][y].block_sight = False
             self.tiles[x][y].blocked = False
         y += 1
         
-        for x in range(8, 52):
+        for x in range(14, 26):
             self.tiles[x][y].block_sight = False
             self.tiles[x][y].blocked = False
         y += 1
         
-        for x in range(9, 51):
+        for x in range(17, 23):
             self.tiles[x][y].block_sight = False
             self.tiles[x][y].blocked = False
         y += 1
-        
-        for x in range(10, 50):
-            self.tiles[x][y].block_sight = False
-            self.tiles[x][y].blocked = False
-        y += 1
-        
-        for x in range(11, 49):
-            self.tiles[x][y].block_sight = False
-            self.tiles[x][y].blocked = False
-        y += 1
-        
-        for x in range(12, 48):
-            self.tiles[x][y].block_sight = False
-            self.tiles[x][y].blocked = False
-        y += 1
-        
-        for x in range(13, 47):
-            self.tiles[x][y].block_sight = False
-            self.tiles[x][y].blocked = False
-        y += 1
-        
-        print(str(y))
-        
-        for x in range(15, 45):
-            self.tiles[x][y].block_sight = False
-            self.tiles[x][y].blocked = False
-        y += 1
-        
-        for x in range(16, 44):
-            self.tiles[x][y].block_sight = False
-            self.tiles[x][y].blocked = False
-        y += 1
-        
-        for x in range(18, 42):
-            self.tiles[x][y].block_sight = False
-            self.tiles[x][y].blocked = False
-        y += 1
-        
-        for x in range(21, 39):
-            self.tiles[x][y].block_sight = False
-            self.tiles[x][y].blocked = False
-        y += 1
-        
-        for x in range(25, 35):
-            self.tiles[x][y].block_sight = False
-            self.tiles[x][y].blocked = False
-        y += 1
+
+    def make_map(self, max_rooms, room_min_size, room_max_size, map_width, map_height, player, entities,
+                 max_monsters_per_room, max_items_per_room):
+       
+        self.make_circle(y=3)
                     
-
-        
-        
-        player.x = 28
-        player.y = 1
+        self.place_entities(0, entities, max_monsters_per_room, max_items_per_room)
+       
+        player.x = 21
+        player.y = 21
         
     def create_room(self, room):
         # go through the tiles in the rectangle and make them passable
@@ -357,8 +238,8 @@ class GameMap:
 
         for i in range(number_of_monsters):
             # Choose a random location in the room
-            x = randint(room.x1 + 1, room.x2 - 1)
-            y = randint(room.y1 + 1, room.y2 - 1)
+            x = randint(8,32)
+            y = randint(7,31)
 
             # Check if an entity is already in that location
             if not any([entity for entity in entities if entity.x == x and entity.y == y]):
@@ -366,17 +247,18 @@ class GameMap:
                     fighter_component = Fighter(hp=10, defense=0, power=3)
                     ai_component = BasicMonster()
 
-                    monster = Entity(x, y, 'o', libtcod.desaturated_green, 'Orc', blocks=True,
+                    monster = Entity(x, y, 4, 'o', libtcod.yellow, 'Orc', blocks=True,
                                      render_order=RenderOrder.ACTOR, fighter=fighter_component, ai=ai_component)
                 else:
                     fighter_component = Fighter(hp=16, defense=1, power=4)
                     ai_component = BasicMonster()
 
-                    monster = Entity(x, y, 'T', libtcod.darker_green, 'Troll', blocks=True, fighter=fighter_component,
+                    monster = Entity(x, y, 4, 'T', libtcod.cyan, 'Troll', blocks=True, fighter=fighter_component,
                                      render_order=RenderOrder.ACTOR, ai=ai_component)
 
                 entities.append(monster)
 
+        '''
         for i in range(number_of_items):
             x = randint(room.x1 + 1, room.x2 - 1)
             y = randint(room.y1 + 1, room.y2 - 1)
@@ -405,7 +287,8 @@ class GameMap:
                                   item=item_component)
 
                 entities.append(item)
-
+        ''' 
+        
     def is_blocked(self, x, y):
         if self.tiles[x][y].blocked:
             return True

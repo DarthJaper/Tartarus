@@ -9,10 +9,11 @@ class Entity:
     """
     A generic object to represent players, enemies, items, etc.
     """
-    def __init__(self, x, y, char, color, name, blocks=False, render_order=RenderOrder.CORPSE, fighter=None, ai=None,
+    def __init__(self, x, y, z, char, color, name, blocks=False, render_order=RenderOrder.CORPSE, fighter=None, ai=None,
                  item=None, inventory=None):
         self.x = x
         self.y = y
+        self.z = z
         self.char = char
         self.color = color
         self.name = name

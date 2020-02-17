@@ -17,8 +17,8 @@ from render_functions import RenderOrder
 def get_constants():
     window_title = 'Tartarus'
 
-    screen_width = 60
-    screen_height = 60
+    screen_width = 40
+    screen_height = 40
 
     bar_width = 20
     panel_height = 7
@@ -28,8 +28,8 @@ def get_constants():
     message_width = screen_width - bar_width - 2
     message_height = panel_height - 1
 
-    map_width = 60
-    map_height = 60
+    map_width = 40  
+    map_height = 40
 
     room_max_size = 10
     room_min_size = 6
@@ -48,9 +48,9 @@ def get_constants():
         #'light_wall': libtcod.Color(130, 110, 50),
         #'light_ground': libtcod.Color(200, 180, 50)
         'dark_wall': libtcod.Color(0, 0, 100),
-        'dark_ground': libtcod.Color(50, 50, 150),
+        'dark_ground': libtcod.Color(64, 0, 0),
         'light_wall': libtcod.Color(130, 110, 50),
-        'light_ground': libtcod.Color(200, 180, 50)
+        'light_ground': libtcod.Color(64, 0, 0)
     }
 
     constants = {
@@ -82,14 +82,15 @@ def get_constants():
 def get_game_variables(constants):
     fighter_component = Fighter(hp=30, defense=2, power=5)
     inventory_component = Inventory(26)
-    player = Entity(0, 0, '@', libtcod.white, 'Player', blocks=True, render_order=RenderOrder.ACTOR,
+    player = Entity(0, 0, 0, '@', libtcod.white, 'Player', blocks=True, render_order=RenderOrder.ACTOR,
                     fighter=fighter_component, inventory=inventory_component)
     entities = [player]
 
+
     game_map = GameMap(constants['map_width'], constants['map_height'])
     game_map.make_map(constants['max_rooms'], constants['room_min_size'], constants['room_max_size'],
-                      constants['map_width'], constants['map_height'], player, entities,
-                      constants['max_monsters_per_room'], constants['max_items_per_room'])
+                          constants['map_width'], constants['map_height'], player, entities,
+                          constants['max_monsters_per_room'], constants['max_items_per_room'])
 
     message_log = MessageLog(constants['message_x'], constants['message_width'], constants['message_height'])
 
