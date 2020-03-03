@@ -63,8 +63,20 @@ def message_box(con, header, width, screen_width, screen_height):
     menu(con, header, [], width, screen_width, screen_height)
     
 def death(player):
-    libtcod.console_clear(0)
-    libtcod.console_set_default_foreground(0, libtcod.yellow)
-    libtcod.console_print_ex(0, 20, 20, libtcod.BKGND_NONE, libtcod.CENTER,
-                             'uded')
-    menu(0, '', ['Play a new game', 'Continue last game', 'Quit'], 24, 40, 40)
+    
+    key = libtcod.Key()
+    mouse = libtcod.Mouse()
+
+    while True:
+        libtcod.sys_check_for_event(libtcod.EVENT_KEY_PRESS | libtcod.EVENT_MOUSE, key, mouse)
+        
+        libtcod.console_clear(0)
+        libtcod.console_set_default_foreground(0, libtcod.yellow)
+        libtcod.console_print_ex(0, 20, 20, libtcod.BKGND_NONE, libtcod.CENTER,
+                                 'uded')
+        libtcod.console_flush()
+
+
+        if key.vk == libtcod.KEY_ESCAPE:
+            break
+            

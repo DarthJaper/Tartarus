@@ -114,10 +114,8 @@ class Entity:
             
                 if game_map.tiles[tx][ty].blocked:
                     if target.name == "Player":
-                        isded = True
-                        while isded == True:
-                            print('oof. player dies.')
-                            death(target)
+                        print('oof. player dies.')
+                        death(target)
                         break
                     else:
                         if self.name == "Player":

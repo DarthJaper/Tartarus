@@ -1,6 +1,6 @@
 import tcod as libtcod
 
-from entity import get_blocking_entities_at_location, death
+from entity import get_blocking_entities_at_location
 from fov_functions import initialize_fov, recompute_fov
 from game_messages import Message
 from game_states import GameStates
@@ -27,8 +27,8 @@ def play_game(player, entities, game_map, message_log, game_state, con, panel, c
     targeting_item = None
 
     while not libtcod.console_is_window_closed():
-        2
-
+        libtcod.sys_check_for_event(libtcod.EVENT_KEY_PRESS | libtcod.EVENT_MOUSE, key, mouse)
+        
         if fov_recompute:
             recompute_fov(fov_map, player.x, player.y, constants['fov_radius'], constants['fov_light_walls'],
                           constants['fov_algorithm'])
@@ -87,8 +87,6 @@ def play_game(player, entities, game_map, message_log, game_state, con, panel, c
             else:
                 message_log.add_message(Message('There is nothing here to pick up.', libtcod.yellow))
 
-        
-
         if exit:
             if game_state in (GameStates.SHOW_INVENTORY, GameStates.DROP_INVENTORY):
                 game_state = previous_game_state
@@ -121,8 +119,6 @@ def play_game(player, entities, game_map, message_log, game_state, con, panel, c
                     message = kill_monster(dead_entity)
 
                 message_log.add_message(message)
-
-            
 
         if game_state == GameStates.ENEMY_TURN:
             
