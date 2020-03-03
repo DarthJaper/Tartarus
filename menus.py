@@ -1,4 +1,5 @@
 import tcod as libtcod
+import time
 
 
 def menu(con, header, options, width, screen_width, screen_height):
@@ -60,3 +61,10 @@ def main_menu(con, background_image, screen_width, screen_height):
 
 def message_box(con, header, width, screen_width, screen_height):
     menu(con, header, [], width, screen_width, screen_height)
+    
+def death(player):
+    libtcod.console_clear(0)
+    libtcod.console_set_default_foreground(0, libtcod.yellow)
+    libtcod.console_print_ex(0, 20, 20, libtcod.BKGND_NONE, libtcod.CENTER,
+                             'uded')
+    menu(0, '', ['Play a new game', 'Continue last game', 'Quit'], 24, 40, 40)

@@ -3,6 +3,8 @@ import tcod as libtcod
 import math
 
 from render_functions import RenderOrder, clear_entity, draw_entity
+from menus import death
+from input_handlers import handle_keys, handle_mouse, handle_main_menu
 
 import time
 
@@ -25,9 +27,12 @@ class Entity:
         self.ai = ai
         self.item = item
         self.inventory = inventory
-
+        
         if self.name == "Player":
             self.depth = 10
+            self.killcounts = {}
+            self.score = 0
+            self.multiplier = 1
             
 
         if self.fighter:
@@ -63,41 +68,80 @@ class Entity:
 
     def push(self, target, entities, fov_map, game_map):
         #push a target. can get direction from self.x,y and target.x,y1
-
+        
+        player = None
+        
+        for e in entities:
+            if e.name == "Player":
+                player = e
+                break
+        
         dirx = target.x - self.x
-        diry = target.y - self.y
-            
+        diry = target.y - self.y     
+        
+        for entity in entities:
+            if self.x - dirx == entity.x and self.y - diry == entity.y:
+                clear_entity(0, entity)
+                entity.x -= dirx
+                entity.y -= diry
+                draw_entity(0, entity, fov_map)
+                break
+
         clear_entity(0, self)
         self.x -= dirx
         self.y -= diry
         draw_entity(0, self, fov_map)
         
-        for c in range(self.strength+1):
+        throw_range = 15
+        if target.name == "Player":
+            throw_range = self.strength
+        
+        for c in range(throw_range+1):
             targets_target = get_blocking_entities_at_location(entities, target.x + dirx, target.y + diry)
         
             if targets_target:
+                player.multiplier += 1
+                print("c-c-c-combooooo!")
                 target.push(targets_target, entities, fov_map, game_map)
+                
                 break
             else:
+                player.multiplier = 1
+                
                 tx = target.x + dirx
                 ty = target.y + diry
+                isded = False
             
                 if game_map.tiles[tx][ty].blocked:
                     if target.name == "Player":
-                        print('oof. player dies.')
+                        isded = True
+                        while isded == True:
+                            print('oof. player dies.')
+                            death(target)
                         break
                     else:
-                        print(target.name + " dies!")
+                        if self.name == "Player":
+                            count = self.killcounts.get(target.name)
+                            if count:
+                                self.killcounts[target.name] += 1
+                                print(str(target.name) + " x" + str(self.killcounts[target.name]))
+                            else:
+                                self.killcounts[target.name] = 1
+                                
+                        #do a dies
+                        player.score += (10 * player.multiplier)                        
                         entities.remove(target)
                         break
                     
                 else:
+                    #rudimentary animation of entity being pushed
                     clear_entity(0, target)
                     target.x += dirx
                     target.y += diry
                     draw_entity(0, target, fov_map)
                     time.sleep(.015)
                     libtcod.console_flush()
+
             
         
 

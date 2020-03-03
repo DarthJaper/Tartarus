@@ -1,7 +1,6 @@
 import tcod as libtcod
 
-from death_functions import kill_monster, kill_player
-from entity import get_blocking_entities_at_location
+from entity import get_blocking_entities_at_location, death
 from fov_functions import initialize_fov, recompute_fov
 from game_messages import Message
 from game_states import GameStates
@@ -10,8 +9,9 @@ from loader_functions.initialize_new_game import get_constants, get_game_variabl
 from loader_functions.data_loaders import load_game, save_game
 from menus import main_menu, message_box
 from render_functions import clear_all, render_all, clear_entity, draw_entity
-
+from random import randint
 import time
+
 
 def play_game(player, entities, game_map, message_log, game_state, con, panel, constants):
     fov_recompute = True
@@ -27,7 +27,7 @@ def play_game(player, entities, game_map, message_log, game_state, con, panel, c
     targeting_item = None
 
     while not libtcod.console_is_window_closed():
-        libtcod.sys_check_for_event(libtcod.EVENT_KEY_PRESS | libtcod.EVENT_MOUSE, key, mouse)
+        2
 
         if fov_recompute:
             recompute_fov(fov_map, player.x, player.y, constants['fov_radius'], constants['fov_light_walls'],
@@ -87,32 +87,7 @@ def play_game(player, entities, game_map, message_log, game_state, con, panel, c
             else:
                 message_log.add_message(Message('There is nothing here to pick up.', libtcod.yellow))
 
-        if show_inventory:
-            previous_game_state = game_state
-            game_state = GameStates.SHOW_INVENTORY
-
-        if drop_inventory:
-            previous_game_state = game_state
-            game_state = GameStates.DROP_INVENTORY
-
-        if inventory_index is not None and previous_game_state != GameStates.PLAYER_DEAD and inventory_index < len(
-                player.inventory.items):
-            item = player.inventory.items[inventory_index]
-
-            if game_state == GameStates.SHOW_INVENTORY:
-                player_turn_results.extend(player.inventory.use(item, entities=entities, fov_map=fov_map))
-            elif game_state == GameStates.DROP_INVENTORY:
-                player_turn_results.extend(player.inventory.drop_item(item))
-
-        if game_state == GameStates.TARGETING:
-            if left_click:
-                target_x, target_y = left_click
-
-                item_use_results = player.inventory.use(targeting_item, entities=entities, fov_map=fov_map,
-                                                        target_x=target_x, target_y=target_y)
-                player_turn_results.extend(item_use_results)
-            elif right_click:
-                player_turn_results.append({'targeting_cancelled': True})
+        
 
         if exit:
             if game_state in (GameStates.SHOW_INVENTORY, GameStates.DROP_INVENTORY):
@@ -147,31 +122,7 @@ def play_game(player, entities, game_map, message_log, game_state, con, panel, c
 
                 message_log.add_message(message)
 
-            if item_added:
-                entities.remove(item_added)
-
-                game_state = GameStates.ENEMY_TURN
-
-            if item_consumed:
-                game_state = GameStates.ENEMY_TURN
-
-            if item_dropped:
-                entities.append(item_dropped)
-
-                game_state = GameStates.ENEMY_TURN
-
-            if targeting:
-                previous_game_state = GameStates.PLAYERS_TURN
-                game_state = GameStates.TARGETING
-
-                targeting_item = targeting
-
-                message_log.add_message(targeting_item.item.targeting_message)
-
-            if targeting_cancelled:
-                game_state = previous_game_state
-
-                message_log.add_message(Message('Targeting cancelled'))
+            
 
         if game_state == GameStates.ENEMY_TURN:
             
@@ -183,7 +134,16 @@ def play_game(player, entities, game_map, message_log, game_state, con, panel, c
             for entity in entities:
                 if entity.ai:
                     enemy_turn_results = entity.ai.take_turn(player, fov_map, game_map, entities)
-                    if entity.z > 0: entity.z -= 1
+                    if entity.z > 0:
+                        guyintheway = get_blocking_entities_at_location(entities, entity.x, entity.y)
+                        if guyintheway:
+                            entity.x = entity.x + randint(-1,1)
+                            entity.y = entity.y + randint(-1,1)
+                            if entity.x == 0 and entity.y == 0:
+                                entity.x = entity.x + randint(-1,1)
+                                entity.y = entity.y + randint(-1,1)
+                        entity.z -= 1
+                    
                     target = get_blocking_entities_at_location(entities, entity.x, entity.y)
                     if target:
                         if not target == entity:
@@ -212,6 +172,7 @@ def play_game(player, entities, game_map, message_log, game_state, con, panel, c
                                 break
 
                     if game_state == GameStates.PLAYER_DEAD:
+                        libtcod.console_clear(0)
                         break
             else:
                 game_state = GameStates.PLAYERS_TURN

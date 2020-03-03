@@ -76,9 +76,13 @@ def render_all(con, panel, entities, player, game_map, fov_map, fov_recompute, m
     libtcod.console_print_ex(con, 1, 1, libtcod.BKGND_NONE, libtcod.LEFT, "Depth;")
     libtcod.console_print_ex(con, 1, 2, libtcod.BKGND_NONE, libtcod.LEFT, str(player.depth))
 
-    libtcod.console_print_ex(con, 36, 1, libtcod.BKGND_NONE, libtcod.LEFT, "123")
-    libtcod.console_print_ex(con, 36, 2, libtcod.BKGND_NONE, libtcod.LEFT, "4 4")
-    libtcod.console_print_ex(con, 36, 3, libtcod.BKGND_NONE, libtcod.LEFT, "526")
+    libtcod.console_print_ex(con, 1, 4, libtcod.BKGND_NONE, libtcod.LEFT, "Score;")
+    libtcod.console_print_ex(con, 1, 5, libtcod.BKGND_NONE, libtcod.LEFT, str(player.score))
+
+    # 'frame' for item icons
+    #libtcod.console_print_ex(con, 36, 1, libtcod.BKGND_NONE, libtcod.LEFT, "123")
+    #libtcod.console_print_ex(con, 36, 2, libtcod.BKGND_NONE, libtcod.LEFT, "4 4")
+    #libtcod.console_print_ex(con, 36, 3, libtcod.BKGND_NONE, libtcod.LEFT, "526")
     
     libtcod.console_set_default_foreground(con, libtcod.dark_gray)
     libtcod.console_print_ex(con, 31, 38, libtcod.BKGND_NONE, libtcod.LEFT, "Tartarus")
