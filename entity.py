@@ -100,10 +100,25 @@ class Entity:
             targets_target = get_blocking_entities_at_location(entities, target.x + dirx, target.y + diry)
         
             if targets_target:
-                player.multiplier += 1
-                print("c-c-c-combooooo!")
-                target.push(targets_target, entities, fov_map, game_map)
-                
+                if targets_target.name == "Boulder":
+                    if targets_target.z == 0:
+                        if self.name == "Player":
+                            count = self.killcounts.get(target.name)
+                            if count:
+                                self.killcounts[target.name] += 1
+                                print(str(target.name) + " x" + str(self.killcounts[target.name]))
+                            else:
+                                self.killcounts[target.name] = 1
+                                
+                            #do a dies
+                            player.score += (10 * player.multiplier)                        
+                            entities.remove(target)
+                            break
+                else:
+                    player.multiplier += 1
+                    print("c-c-c-combooooo!")
+                    target.push(targets_target, entities, fov_map, game_map)
+                    
                 break
             else:
                 player.multiplier = 1

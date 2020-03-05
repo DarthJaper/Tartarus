@@ -125,10 +125,14 @@ def play_game(player, entities, game_map, message_log, game_state, con, panel, c
             player.depth += 10
             if player.depth % 30 == 0:
                 game_map.place_entities(0, entities, 2, 0)
-                
         
             for entity in entities:
-                if entity.ai:
+                if entity.name == 'Boulder':
+                    if entity.z < 0 :
+                        entities.remove(entity)
+                    else:
+                        entity.z -= 1
+                elif entity.ai:
                     enemy_turn_results = entity.ai.take_turn(player, fov_map, game_map, entities)
                     if entity.z > 0:
                         guyintheway = get_blocking_entities_at_location(entities, entity.x, entity.y)
@@ -170,6 +174,7 @@ def play_game(player, entities, game_map, message_log, game_state, con, panel, c
                     if game_state == GameStates.PLAYER_DEAD:
                         libtcod.console_clear(0)
                         break
+                
             else:
                 game_state = GameStates.PLAYERS_TURN
 
